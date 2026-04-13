@@ -153,29 +153,42 @@ body {
 }
 #skill1 {
     border-color: #3174fa;
+     background-image: url('textures/skill1.png');
 }
 #skill2 {
     border-color: #3174fa;
+     background-image: url('textures/skill2.png');
 }
 #skill3 {
     border-color: #3174fa;
+        background-image: url('textures/skill3.png');
 }
 #skill4 {
     border-color: #c300ff;
      background-image: url('textures/skill4.png');
 }
-#skill1-state {
-    
+
+.skill.cooldown {
+    pointer-events: none;
+    filter: grayscale(80%);
 }
-#skill2-state {
-    
+
+.skill.cooldown::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: cooldown-animation 10s linear forwards; /* 5s — это время отката */
 }
-#skill3-state {
-    
+
+@keyframes cooldown-animation {
+    from { height: 100%; } 
+    to { height: 0%; } 
 }
-#skill4-state {
-    
-}
+
 
 
 .game-button {
@@ -204,13 +217,17 @@ body {
 
 .tower {
     position: absolute;
-    width: 50px;
-    height: 50px;
-    top: 275px;
-    left: 275px;
+    width: 75px;
+    height:75px;
+    top: 260px;
+    left: 260px;
     background-color: #4a4a4a;
     border: 4px solid #222;
     border-radius: 25px;
+    background-image: url('./textures/tower.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
 }
 
 #score {
@@ -226,4 +243,14 @@ body {
     font-size: 18px;
     font-weight: bold;
     text-align: center;
+}
+
+.enemy {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #e74c3c; /* Красный цвет */
+    border-radius: 50%; /* Делаем их круглыми */
+    /* Сдвигаем на половину размера, чтобы координаты x/y были центром врага */
+    transform: translate(-50%, -50%); 
 }

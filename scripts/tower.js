@@ -11,21 +11,14 @@ export default class Tower {
         this.element.className = "tower";
     }
 
-    get element() {
-        return this.element;
-    }
-
     takeDamage(amount) {
         this.hp -= amount;
     }
 
-    hide() {
-        this.element.style.display = "none";
+    get element() {
+        return this.element;
     }
-    
     get position() {
         return {x: this.x, y: this.y};
     }
-
-    
 }

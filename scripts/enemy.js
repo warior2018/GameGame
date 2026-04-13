@@ -1,38 +1,31 @@
-// scripts/enemy.js
 export default class Enemy {
-    element;
-    hp;
     x;
     y;
+    hp;
     speed;
-
-    constructor(x, y, hp = 1) {
+    element; 
+    isDead;
+    constructor(x, y, hp = 5, speed = 1) {
         this.x = x;
         this.y = y;
-        this.hp = hp;
-        this.speed = 5;
+        this.hp = hp; 
+        this.isDead = false;
+        this.speed = 0.25 * speed;
+        this.element = document.createElement("div");
+        this.element.className = "enemy"; 
         
-        this.element = document.createElement("button");
-        this.element.className = "enemy";
-        this.element.style.position = "absolute";
-        this.element.style.width = "40px";
-        this.element.style.height = "40px";
-        
-        this.updatePosition();
+        this.element.style.left = `${this.x}px`;
+        this.element.style.top = `${this.y}px`;
+        this.element.addEventListener('click', () => {
+            this.takeDamage(1);
+        });
     }
-
-    get element() { return this.element; }
-    get x() { return this.x; }
-    get y() { return this.y; }
-
-    moveTo(targetX, targetY) {
-        if (this.x < targetX) this.x += this.speed;
-        else if (this.x > targetX) this.x -= this.speed;
-
-        if (this.y < targetY) this.y += this.speed;
-        else if (this.y > targetY) this.y -= this.speed;
-
-        this.updatePosition();
+    
+    takeDamage(damage) {
+        this.hp -= damage;
+        if (this.hp <= 0) {
+            this.die();
+        }
     }
 
     updatePosition() {
@@ -40,19 +33,8 @@ export default class Enemy {
         this.element.style.top = `${this.y}px`;
     }
 
-    takeDamage(amount) {
-        this.hp -= amount;
-        const hpDisplay = this.element.querySelector('.hp-count');
-        if (hpDisplay) hpDisplay.textContent = this.hp;
-
-        if (this.hp <= 0) {
-            this.destroy();
-            return true;
-        }
-        return false;
-    }
-
-    destroy() {
-        this.element.remove(); 
+    die() {
+        this.isDead = true;
+        this.element.remove();
     }
 }
