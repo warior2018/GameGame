@@ -98,16 +98,6 @@ export function startGame() {
     scoreDisplay.textContent = `Score: ${score}`;
     gameField.appendChild(scoreDisplay);
 
-    mainTower.element.addEventListener('click', () => {
-        if (mainTower.hp > 0) {
-            mainTower.hp -= 1;
-            hpNumber.textContent = mainTower.hp;
-            let heart = document.getElementById(`heart${mainTower.hp + 1}`);
-            if (heart) heart.src = "./textures/-heart.png";
-        }
-    });
-
-
     ////skills clicks
     skill4Button.addEventListener('click', () => {
         if (!skill4Button.classList.contains('cooldown') && mainTower.hp < 3 && !isGameOver) {
