@@ -1,7 +1,6 @@
 import Tower from "./tower.js";
 import Enemy from "./enemy.js";
 
-
 const hpNumber = document.getElementById("currentHP");
 let mainTower = null;
 let isGameOver = false;
@@ -10,8 +9,10 @@ const skill4Button = document.getElementById("skill4");
 const skill3Button = document.getElementById("skill3");
 const skill2Button = document.getElementById("skill2");
 const skill1Button = document.getElementById("skill1");
-
 let enemies = [];
+let score1 = 0;
+
+
 function spawnEnemy() {
     if (isGameOver){
         return
@@ -36,6 +37,10 @@ function spawnEnemy() {
     enemy.element.style.top = `${y}px`;
 
     enemies.push(enemy);
+    score1 +=1;
+    const scoreDisplayNow = document.getElementById("score");
+    scoreDisplayNow.textContent = `Score: ${score1}`;
+    
 }
 
 
@@ -53,7 +58,7 @@ function gameloop() {
         const dx = 300 - enemy.x; 
         const dy = 300 - enemy.y; 
         const distance = Math.sqrt(dx * dx + dy * dy);
-
+        
         if (distance > 40) { 
             enemy.x += (dx / distance) * enemy.speed;
             enemy.y += (dy / distance) * enemy.speed;
@@ -80,7 +85,6 @@ function gameloop() {
 }
 
 
-
 export function startGame() {
 
     gameField = document.querySelector('.game');
@@ -88,7 +92,7 @@ export function startGame() {
     mainTower = new Tower(3);
     gameField.appendChild(mainTower.element);
 
-    let score = 0;
+    let score = score1;
     const scoreDisplay = document.createElement('div');
     scoreDisplay.id = 'score';
     scoreDisplay.textContent = `Score: ${score}`;
@@ -185,6 +189,6 @@ export function startGame() {
 
 
 
-    setInterval(spawnEnemy, 5000);
+    setInterval(spawnEnemy, 2500);
     requestAnimationFrame(gameloop);
 }
