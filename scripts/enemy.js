@@ -1,4 +1,4 @@
-export default class Enemy {
+class Enemy {
     x;
     y;
     hp;

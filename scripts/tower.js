@@ -1,14 +1,14 @@
 // scripts/tower.js
-export default class Tower {
-    element;
+class Tower {
+    _element;
     hp;
     x;
     y;
 
     constructor (hp = 3) {
-        this.element = document.createElement("div");
+        this._element = document.createElement("div");
         this.hp = hp;
-        this.element.className = "tower";
+        this._element.className = "tower";
     }
 
     takeDamage(amount) {
@@ -16,7 +16,7 @@ export default class Tower {
     }
 
     get element() {
-        return this.element;
+        return this._element;
     }
     get position() {
         return {x: this.x, y: this.y};

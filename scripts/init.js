@@ -1,6 +1,3 @@
-import Tower from "./tower.js";
-import Enemy from "./enemy.js";
-
 const hpNumber = document.getElementById("currentHP");
 let mainTower = null;
 let isGameOver = false;
@@ -84,8 +81,7 @@ function gameloop() {
     requestAnimationFrame(gameloop);
 }
 
-
-export function startGame() {
+function startGame() {
 
     gameField = document.querySelector('.game');
 
