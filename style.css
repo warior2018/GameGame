@@ -222,11 +222,9 @@ body {
 
 .enemy {
     position: absolute;
-    width: 35px;
-    height: 35px;
     border-radius: 20%; 
     transform: translate(-50%, -50%); 
-    background-image: url("./textures/enemy.png");
+    background-image: url("./textures/enemy3.png");
     background-size: cover;
     background-repeat: no-repeat;
     image-rendering: pixelated;
@@ -239,4 +237,25 @@ body {
     color: #ffffff;
     font-size: 20px;
     font-weight: bold;
+}
+
+#trap{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 15%;
+    background-image: url("./textures/trap.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+}
+
+
+.fireball {
+    position: absolute;
+    border-radius: 50%; 
+    background-color: #000000ad;
+    background-size: cover;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
 }
