@@ -56,9 +56,9 @@ class Enemy {
 
 
 class Boss extends Enemy {
-    constructor(x, y) {
-        super(x, y, 50, 0.08); 
-
+    constructor(x, y, hp) {
+        super(x, y, hp, 0.08); 
+        this.maxhp = hp;
         this.width = 90;
         this.height = 90;
         
@@ -67,14 +67,18 @@ class Boss extends Enemy {
         
         this.element.style.backgroundImage = `url("./textures/enemy3.png")`;
     }
+    
 
     takeDamage(damage) {
         this.hp -= damage;
 
-        if (this.hp > 25 && this.hp <= 40) {
+        if (this.hp <= 0) {
+            this.die();
+        }
+        if (this.hp > this.maxhp/3 && this.hp <= this.maxhp-(this.maxhp/3)) {
             this.element.style.backgroundImage = `url("./textures/enemy2.png")`;
             this.speed = 0.1;
-        } else if (this.hp > 0 && this.hp <= 25) {
+        } else if (this.hp > 0 && this.hp <= this.maxhp/3) {
             this.element.style.backgroundImage = `url("./textures/enemy1.png")`;
             this.speed = 0.15;
         }

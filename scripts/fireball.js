@@ -10,6 +10,7 @@ class FireBall {
         this.isFlying = true; 
         this.speed = 1; 
 
+        
         this.element = document.createElement("div");
         this.element.className = "fireball"; 
         this.element.style.position = "absolute";

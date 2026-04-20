@@ -13,7 +13,7 @@ let fireballs = [];
 let currentMouseX = 0;
 let currentMouseY = 0;
 let lastBossScore = 0;
-
+let bossHP = 24;
 
 function spawnEnemy() {
     if (isGameOver) return;
@@ -57,7 +57,8 @@ function spawnBoss() {
     const x = centerX + Math.cos(angle) * distance;
     const y = centerY + Math.sin(angle) * distance;
 
-    const enemy = new Boss(x, y);
+    const enemy = new Boss(x, y, bossHP);
+    bossHP += 2;
     gameField.appendChild(enemy.element);
     
     enemy.element.style.position = 'absolute';
@@ -65,10 +66,6 @@ function spawnBoss() {
     enemy.element.style.top = `${y}px`;
 
     enemies.push(enemy);
-    const scoreDisplayNow = document.getElementById("score");
-    if (scoreDisplayNow) {
-        scoreDisplayNow.textContent = `Score: ${score1}`;
-    }
 }
 
 function gameloop() {
@@ -82,26 +79,27 @@ function gameloop() {
     enemies = enemies.filter(enemy => !enemy.isDead);
     traps = traps.filter(trap => !trap.isDead);
     fireballs = fireballs.filter(fireball => !fireball.isDead);
-    if (score1 % 50 === 0 && score1 !== lastBossScore) {
-    spawnBoss();
-    lastBossScore = score1;
+
+    if (score1 % 25 === 0 && score1 !== lastBossScore && score1 !== 0) {
+        spawnBoss();
+        lastBossScore = score1;
     }
+
     fireballs.forEach((fireball) => {
         fireball.move();
     });
     
     enemies.forEach((enemy) => {
         traps.forEach((trap) => {
-        if (enemy.isDead) return;
-        const dx = trap.x - enemy.x;
-        const dy = trap.y - enemy.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+            if (enemy.isDead) return;
+            const dx = trap.x - enemy.x;
+            const dy = trap.y - enemy.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < (trap.width / 2 + enemy.width / 2)) {
-            
-          enemy.takeDamage(12);
-           trap.die();
-        }
+            if (distance < (trap.width / 2 + enemy.width / 2)) {
+                enemy.takeDamage(12);
+                trap.die();
+            }
         });
 
         if (enemy.isDead) return;
@@ -113,13 +111,14 @@ function gameloop() {
             const dy = fireball.y - enemy.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
-            if (distance < (fireball.width+enemy.width)/2) { 
+            if (distance < (fireball.width + enemy.width) / 2) { 
                 enemy.takeDamage(20);
+                fireball.die();
             }
-            fireball.die();
         });
 
         if (enemy.isDead) return;
+
         const dx = 300 - enemy.x; 
         const dy = 300 - enemy.y; 
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -130,19 +129,18 @@ function gameloop() {
             enemy.element.style.left = `${enemy.x}px`;
             enemy.element.style.top = `${enemy.y}px`;
         } else {
-            /////boss dmg
-            if (enemy instanceof Boss) {
-            mainTower.hp -= 1;
-            let bossHeart = document.getElementById(`heart${mainTower.hp + 1}`);
-            if (bossHeart) bossHeart.src = "./textures/-heart.png";
-            }
-            ///usuall dmg
-            mainTower.hp -= 1;
-            hpNumber.textContent = mainTower.hp;
-            enemy.die();
+            let damage = (enemy instanceof Boss) ? 2 : 1;
             
-            let heart = document.getElementById(`heart${mainTower.hp + 1}`);
-            if (heart) heart.src = "./textures/-heart.png";
+            for (let i = 0; i < damage; i++) {
+                mainTower.hp -= 1;
+                let heart = document.getElementById(`heart${mainTower.hp + 1}`);
+                if (heart) {
+                    heart.style.backgroundImage = "url('./textures/-heart.png')";
+                }
+            }
+
+            hpNumber.textContent = Math.max(0, mainTower.hp);
+            enemy.die();
         }
     });
 
@@ -150,8 +148,9 @@ function gameloop() {
         isGameOver = true;
         const finalScore = document.getElementById("score") ? document.getElementById("score").textContent.split(": ")[1] : score1;
         alert("Game Over! Your score: " + finalScore);
+    } else {
+        requestAnimationFrame(gameloop);
     }
-    requestAnimationFrame(gameloop);
 }
 
 function useTrap() {
@@ -168,7 +167,7 @@ function useTrap() {
 function useFireBall() {
     if (!skill3Button.classList.contains('cooldown') && !isGameOver) {
         skill3Button.classList.add('cooldown');
-        setTimeout(() => skill3Button.classList.remove('cooldown'), 14000);
+        setTimeout(() => skill3Button.classList.remove('cooldown'), 10000);
 
         const posX = currentMouseX - 20;
         const posY = currentMouseY - 20;
@@ -200,8 +199,11 @@ function startGame() {
         if (!skill4Button.classList.contains('cooldown') && mainTower.hp < 3 && !isGameOver) {
             mainTower.hp += 1;
             hpNumber.textContent = mainTower.hp;
+            
             let heart = document.getElementById(`heart${mainTower.hp}`);
-            if (heart) heart.src = "./textures/heart.png";
+            if (heart) {
+                heart.style.backgroundImage = "url('./textures/heart.png')";
+            }
             
             skill4Button.classList.add('cooldown');
             setTimeout(() => skill4Button.classList.remove('cooldown'), 10000);
